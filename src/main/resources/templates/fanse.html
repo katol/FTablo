@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Scoreboard</title>
-    <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
 </head>
 
 <body>
@@ -15,11 +15,16 @@
     </button>
 
 </div>
-<div class="container-fluid" style =  "background: url(../static/img/Табло4.jpg) no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;">
+<div
+        class="container-fluid"
+        th:style="'
+            background: url(img/Tablo4.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        '"
+>
         <div class="row" style="height: 25vh">
             <div class = "col-6 text-center">
                 <h1 class="display-5 text-white m-1">БОЕЦ НОМЕР РАЗ</h1>
@@ -60,8 +65,8 @@
             </div>
         </div>
 </div>
-<script src="../../js/jquery-3.4.1.min.js"></script>
-<script src="../../js/popper.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
+<script th:src="@{js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{js/popper.min.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
 </body>
 </html>
