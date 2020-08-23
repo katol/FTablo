@@ -2,6 +2,7 @@ package FTablo.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "fights")
@@ -30,6 +31,40 @@ public class Fight {
 
     @Column
     private Integer blueScores;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fight fight = (Fight) o;
+        return id.equals(fight.id) &&
+                secondsPassed.equals(fight.secondsPassed) &&
+                endTs.equals(fight.endTs) &&
+                endDescription.equals(fight.endDescription) &&
+                redName.equals(fight.redName) &&
+                redScores.equals(fight.redScores) &&
+                blueName.equals(fight.blueName) &&
+                blueScores.equals(fight.blueScores);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, secondsPassed, endTs, endDescription, redName, redScores, blueName, blueScores);
+    }
+
+    @Override
+    public String toString() {
+        return "Fight{" +
+                "id=" + id +
+                ", secondsPassed=" + secondsPassed +
+                ", endTs=" + endTs +
+                ", endDescription='" + endDescription + '\'' +
+                ", redName='" + redName + '\'' +
+                ", redScores=" + redScores +
+                ", blueName='" + blueName + '\'' +
+                ", blueScores=" + blueScores +
+                '}';
+    }
 
     public Integer getSecondsPassed() {
         return secondsPassed;
