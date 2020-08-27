@@ -6,19 +6,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.sql.Timestamp;
 import java.time.Instant;
+import org.flywaydb.core.Flyway;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class FightsRepositoryTest {
     @Autowired
-    FightsRepository fightsRepository;
+    private Flyway flyway;
+
+    @Autowired
+    private FightsRepository fightsRepository;
 
     @BeforeEach
     void setUp() {
+        flyway.clean();
+        flyway.migrate();
     }
 
     @AfterEach
