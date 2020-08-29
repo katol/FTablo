@@ -114,8 +114,7 @@ var time = 0;
         }else{
         	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
         }
-	}
-		
+	};
 	function accept(){
 		redRes += redScope;
 		blueRes += blueScope;
@@ -125,4 +124,25 @@ var time = 0;
 		document.getElementById("blueScope").innerHTML = blueScope;
 		document.getElementById("redRes").innerHTML = redRes;
 		document.getElementById("blueRes").innerHTML = blueRes;
+	};
+	
+		
+	function selectFight(){
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', 'http://localhost:8080/secretary/fight', false);
+		xhr.send();
+		if (xhr.status != 200) {
+		alert( xhr.status + ': ' + xhr.statusText );
+		} else {
+			var resp = JSON.parse( xhr.responseText).res;
+			var fights = new Array();
+			for (i = 0; i < resp.length; i++){
+				fights.push("<option>" + resp[i].id_serial + " " + resp[i].red_name + " " + resp[i].blue_name + "</option>");
+			}
+			var res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
+			for(i = 0; i < fights.length; i++){
+				res += fights[i];
+			}
+			document.getElementById("selectFight").innerHTML = '<select>'+ res+'</select>';
+		}
 	}
