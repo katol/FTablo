@@ -11,9 +11,6 @@ import java.util.List;
 
 @Controller
 public class FTabloController {
-    public static final String REQUEST_METHOD_VIEW_NAME = "request_method";
-
-
     @GetMapping("/secretary")
     public String secretary() {
         return "secretary";
@@ -23,13 +20,10 @@ public class FTabloController {
     public String fanse() {
         return "fanse";
     }
-}
-@RestController
-@RequestMapping("/secretary/fight")
-class TwoController {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String twoString() {
+    @RequestMapping(value ="/secretary/fights", method = RequestMethod.GET)
+    @ResponseBody
+    public String GetFights() {
         JSONObject firstFight = new JSONObject();
         JSONObject secondFight = new JSONObject();
         JSONObject resFight = new JSONObject();
@@ -53,4 +47,5 @@ class TwoController {
         resFight.put("res", list);
         return resFight.toString();
     }
+
 }

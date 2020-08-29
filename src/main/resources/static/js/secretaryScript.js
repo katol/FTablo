@@ -129,7 +129,7 @@ var time = 0;
 		
 	function selectFight(){
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', 'http://localhost:8080/secretary/fight', false);
+		xhr.open('GET', 'http://localhost:8080/secretary/fights', false);
 		xhr.send();
 		if (xhr.status != 200) {
 		alert( xhr.status + ': ' + xhr.statusText );
@@ -137,12 +137,12 @@ var time = 0;
 			var resp = JSON.parse( xhr.responseText).res;
 			var fights = new Array();
 			for (i = 0; i < resp.length; i++){
-				fights.push("<option>" + resp[i].id_serial + " " + resp[i].red_name + " " + resp[i].blue_name + "</option>");
+				fights.push("<option>" + resp[i].id_serial + " " + resp[i].red_name + " X " + resp[i].blue_name + "</option>");
 			}
 			var res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
 			for(i = 0; i < fights.length; i++){
 				res += fights[i];
 			}
-			document.getElementById("selectFight").innerHTML = '<select>'+ res+'</select>';
+			document.getElementById("selectFight").innerHTML = res;
 		}
 	}
