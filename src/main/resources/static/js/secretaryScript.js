@@ -1,16 +1,15 @@
 var time = 0;
-	var timerId = 0;
-	var activate = 0;
-	var redScope = 0;
-    var blueScope = 0;
-    var redPenalty = 0;
-    var bluePenalty = 0;
-	var blueRes = 0;
-	var redRes = 0;
-	var redName = "Боец номер-номер-номер раз";
-	var blueName = "Боец два";
-	document.getElementById("redName").innerHTML = redName;
-	document.getElementById("blueName").innerHTML = blueName;
+var timerId = 0;
+var activate = 0;
+var redScope = 0;
+var blueScope = 0;
+var redPenalty = 0;
+var bluePenalty = 0;
+var blueRes = 0;
+var redRes = 0;
+var redName = "";
+var blueName = "";
+var resp = new Array();
 	function timer() {
 		if (activate == 0){
 		document.getElementById("startStop").innerHTML = "СТОП";
@@ -48,82 +47,44 @@ var time = 0;
 	}
     function plusRedScope() {
         redScope += 1;
-        document.getElementById("redScope").innerHTML = redScope;
+        reboot();
     };
     function minusRedScope() {
         redScope -= 1;
-        document.getElementById("redScope").innerHTML = redScope;
+		reboot();
     };
     function plusBlueScope() {
         blueScope += 1;
-        document.getElementById("blueScope").innerHTML = blueScope;
+		reboot();
     };
     function minusBlueScope() {
         blueScope -= 1;
-        document.getElementById("blueScope").innerHTML = blueScope;
+		reboot();
     };
 
     function plusBluePenalty() {
         bluePenalty += 1;
-        document.getElementById("bluePenalty").innerHTML = bluePenalty;
-        if (bluePenalty == 0){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
-        }else if (bluePenalty == 1){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
-        }else if (bluePenalty == 2){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
-        }else{
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
-        }
+        reboot();
     };
     function minusBluePenalty() {
         bluePenalty -= 1;
-        document.getElementById("bluePenalty").innerHTML = bluePenalty;
-        if (bluePenalty == 0){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
-        }else if (bluePenalty == 1){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
-        }else if (bluePenalty == 2){
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
-        }else{
-        	document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
-        }
+        reboot();
+
     };
     function plusRedPenalty() {
         redPenalty += 1;
-        document.getElementById("redPenalty").innerHTML = redPenalty;
-        if (redPenalty == 0){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
-        }else if (redPenalty == 1){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
-        }else if (redPenalty == 2){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
-        }else{
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
-        }
+        reboot();
     };
     function minusRedPenalty() {
         redPenalty -= 1;
-        document.getElementById("redPenalty").innerHTML = redPenalty;
-        if (redPenalty == 0){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
-        }else if (redPenalty == 1){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
-        }else if (redPenalty == 2){
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
-        }else{
-        	document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
-        }
+        reboot();
 	};
 	function accept(){
 		redRes += redScope;
 		blueRes += blueScope;
 		redScope = 0;
 		blueScope = 0;
-		document.getElementById("redScope").innerHTML = redScope;
-		document.getElementById("blueScope").innerHTML = blueScope;
-		document.getElementById("redRes").innerHTML = redRes;
-		document.getElementById("blueRes").innerHTML = blueRes;
+		reboot();
 	};
 	
 		
@@ -134,10 +95,10 @@ var time = 0;
 		if (xhr.status != 200) {
 		alert( xhr.status + ': ' + xhr.statusText );
 		} else {
-			var resp = JSON.parse( xhr.responseText).res;
+			resp = JSON.parse( xhr.responseText).res;
 			var fights = new Array();
 			for (i = 0; i < resp.length; i++){
-				fights.push("<option>" + resp[i].id_serial + " " + resp[i].red_name + " X " + resp[i].blue_name + "</option>");
+				fights.push("<option value =" + i +">" + resp[i].id_serial + " " + resp[i].red_name + " X " + resp[i].blue_name + "</option>");
 			}
 			var res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
 			for(i = 0; i < fights.length; i++){
@@ -145,4 +106,47 @@ var time = 0;
 			}
 			document.getElementById("selectFight").innerHTML = res;
 		}
+	}
+	function loadFight(){
+		var fightChange = selectForm.fightSelect;
+		var selectedOption = fightChange.options[fightChange.selectedIndex];
+		redName = resp[selectedOption.value].red_name;
+		blueName = resp[selectedOption.value].blue_name;
+		redRes = resp[selectedOption.value].red_scores;
+		blueRes = resp[selectedOption.value].blue_scores;
+		redScope = 0;
+		blueScope = 0;
+		time = Number(resp[selectedOption.value].seconds_passed);
+		reboot();
+	}
+	function reboot(){
+		document.getElementById("redName").innerHTML = redName;
+		document.getElementById("blueName").innerHTML = blueName;
+		document.getElementById("timer").innerHTML = Math.floor(time/600) + "" + Math.floor((time%600)/60) + ":" + Math.floor((time%60)/10) + time%10;
+		document.getElementById("redScope").innerHTML = redScope;
+		document.getElementById("blueScope").innerHTML = blueScope;
+		document.getElementById("redRes").innerHTML = redRes;
+		document.getElementById("blueRes").innerHTML = blueRes;
+		document.getElementById("bluePenalty").innerHTML = bluePenalty;
+		if (bluePenalty == 0){
+			document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
+		}else if (bluePenalty == 1){
+			document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
+		}else if (bluePenalty == 2){
+			document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
+		}else{
+			document.getElementById("bluePenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
+		}
+		document.getElementById("redPenalty").innerHTML = redPenalty;
+		if (redPenalty == 0){
+			document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 white-card";
+		}else if (redPenalty == 1){
+			document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 yellow-card";
+		}else if (redPenalty == 2){
+			document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 orange-card";
+		}else{
+			document.getElementById("redPenaltyCard").className = "col-5 text-center border rounded mx-1 red-card";
+		}
+
+
 	}
