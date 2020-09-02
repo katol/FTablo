@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Scoreboard</title>
+    <link rel="shortcut icon" th:href="@{/img/Ftablo-ico3.ico}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}">
 </head>
 
@@ -27,24 +28,24 @@
 >
         <div class="row" style="height: 25vh">
             <div class = "col-6 text-center">
-                <h1 class="display-5 text-white m-1">БОЕЦ НОМЕР РАЗ</h1>
-                <h1 class="display-5 text-white">КЛУБ БОЙЦА НОМЕР РАЗ</h1>
+                <h1 class="display-5 text-white m-1" id = "redName">БОЕЦ НОМЕР РАЗ</h1>
+                <h1 class="display-5 text-white"></h1>
             </div>
             <div class = "col-6 text-center">
-                <h1 class="display-5 text-white m-1">БОЕЦ НОМЕР ДВА</h1>
-                <h1 class="display-5 text-white">КЛУБ БОЙЦА НОМЕР ДВА</h1>
+                <h1 class="display-5 text-white m-1" id = blueName>БОЕЦ НОМЕР ДВА</h1>
+                <h1 class="display-5 text-white"></h1>
             </div>
         </div>
         <div class="row text-center" style="height: 40vh">
             <div class = "col-1 text-center" >
             </div>
             <div class = "col-4 text-center" >
-                <h1 class="display-1 font-weight-bold text-white" style ="font-size: 200px !important">05</h1>
+                <h1 class="display-1 font-weight-bold text-white" style ="font-size: 200px !important" id = "redScope">05</h1>
             </div>
             <h1 class="col-2 display-1">
             </h1>
             <div class = "col-4 text-center" >
-                <h1 class="display-1 font-weight-bold text-white" style ="font-size: 200px !important">02</h1>
+                <h1 class="display-1 font-weight-bold text-white" style ="font-size: 200px !important" id = "blueScope">02</h1>
             </div>
             <div class = "col-1 text-center" >
             </div>
@@ -58,13 +59,14 @@
         </div>
         <div class="row text-center" style="height: 15vh">
             <div class = "col-6 text-center">
-                <h1 class="display-5 text-white m-1">Предупреждения : 0</h1>
+                <h1 class="display-5 text-white m-1" id = "redPenalty" >Предупреждения : 0</h1>
             </div>
             <div class = "col-6 text-center">
-                <h1 class="display-5 text-white m-1">Предупреждения : 1</h1>
+                <h1 class="display-5 text-white m-1" id = "bluePenalty">Предупреждения : 1</h1>
             </div>
         </div>
 </div>
+<script th:src="@{js/fanceScript.js}"></script>
 <script th:src="@{js/jquery-3.4.1.min.js}"></script>
 <script th:src="@{js/popper.min.js}"></script>
 <script th:src="@{js/bootstrap.min.js}"></script>

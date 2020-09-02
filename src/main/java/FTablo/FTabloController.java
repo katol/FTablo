@@ -23,7 +23,7 @@ public class FTabloController {
 
     @RequestMapping(value ="/secretary/fights", method = RequestMethod.GET)
     @ResponseBody
-    public String GetFights() {
+    public String getFights() {
         JSONObject firstFight = new JSONObject();
         JSONObject secondFight = new JSONObject();
         JSONObject resFight = new JSONObject();
@@ -46,6 +46,12 @@ public class FTabloController {
         list.add(secondFight);
         resFight.put("res", list);
         return resFight.toString();
+    }
+    @RequestMapping(value = "/exchange", method = RequestMethod.POST)
+    @ResponseBody
+    public String takeExchange() {
+        System.out.println("yeeee!!");
+        return "result";
     }
 
 }
