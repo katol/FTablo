@@ -17,10 +17,13 @@ public class Fight {
     private Integer secondsPassed;
 
     @Column
-    private Timestamp endTs;
+    private Integer lastExchangeNumber;
 
     @Column
-    private String endDescription;
+    private Timestamp lastTs;
+
+    @Column
+    private String lastDescription;
 
     @Column
     private String redName;
@@ -29,8 +32,20 @@ public class Fight {
     private Integer redScores;
 
     @Column
+    private Integer redPenalties;
+
+    @Column
+    private Integer redVideoReplays;
+
+    @Column
     private String blueName;
 
     @Column
     private Integer blueScores;
+
+    @Column
+    private Integer bluePenalties;
+
+    @Column
+    private Integer blueVideoReplays;
 }

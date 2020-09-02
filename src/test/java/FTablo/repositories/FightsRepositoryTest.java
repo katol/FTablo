@@ -1,7 +1,6 @@
 package FTablo.repositories;
 
 import FTablo.entities.Fight;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,25 +25,25 @@ class FightsRepositoryTest {
         flyway.migrate();
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void savesFight() {
         Fight expectedFight = new Fight();
         expectedFight.setSecondsPassed(10);
-        expectedFight.setEndTs(Timestamp.from(Instant.now()));
-        expectedFight.setEndDescription("Some description");
+        expectedFight.setLastExchangeNumber(1);
+        expectedFight.setLastTs(Timestamp.from(Instant.now()));
+        expectedFight.setLastDescription("Some description");
         expectedFight.setRedName("Sveta");
         expectedFight.setRedScores(1);
+        expectedFight.setRedPenalties(0);
+        expectedFight.setRedVideoReplays(1);
         expectedFight.setBlueName("Tolian");
         expectedFight.setBlueScores(2);
+        expectedFight.setBluePenalties(1);
+        expectedFight.setBlueVideoReplays(0);
 
         fightsRepository.save(expectedFight);
 
         Fight actualFight = fightsRepository.findAll().stream().findFirst().orElse(null);
-
         assertEquals(expectedFight, actualFight);
     }
 }
