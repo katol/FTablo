@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import org.flywaydb.core.Flyway;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +32,7 @@ class FightsRepositoryTest {
         Fight expectedFight = new Fight();
         expectedFight.setSecondsPassed(10);
         expectedFight.setLastExchangeNumber(1);
-        expectedFight.setLastTs(Timestamp.from(Instant.now()));
+        expectedFight.setLastTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
         expectedFight.setLastDescription("Some description");
         expectedFight.setRedName("Sveta");
         expectedFight.setRedScores(1);

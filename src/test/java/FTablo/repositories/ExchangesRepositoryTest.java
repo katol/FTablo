@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +38,7 @@ class ExchangesRepositoryTest {
         Fight fight = new Fight();
         fight.setSecondsPassed(10);
         fight.setLastExchangeNumber(1);
-        fight.setLastTs(Timestamp.from(Instant.now()));
+        fight.setLastTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
         fight.setLastDescription("Some description");
         fight.setRedName("Sveta");
         fight.setRedScores(1);
