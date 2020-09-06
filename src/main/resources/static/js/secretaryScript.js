@@ -1,25 +1,28 @@
-var time = 0;
-var timerId = 0;
-var activate = 0;
-var redScope = 0;
-var blueScope = 0;
-var redPenalty = 0;
-var bluePenalty = 0;
-var blueRes = 0;
-var redRes = 0;
-var redName = "";
-var blueName = "";
-var roundNumber = 1;
-var redVideoReplays = 0;
-var blueVideoReplays = 0;
-var fightId = 0;
+let time = 0;
+let timerId = 0;
+let activate = 0;
+let redScope = 0;
+let blueScope = 0;
+let redPenalty = 0;
+let bluePenalty = 0;
+let blueRes = 0;
+let redRes = 0;
+let redName = "";
+let blueName = "";
+let roundNumber = 1;
+let redVideoReplays = 0;
+let blueVideoReplays = 0;
+let fightId = 0;
+let stompClient = null;
 document.getElementById("roundNumber").innerHTML = "Текущий сход №" + roundNumber;
-var resp = new Array();
-	function timer() {
+let resp = [];
+
+function timer() {
 		if (activate == 0){
 		document.getElementById("startStop").innerHTML = "СТОП";
 		activate = 1;
 		timerId = setInterval(function () {
+			connect();
 			time += 1;
 			if(time < 0){
 				time = 0;
@@ -53,44 +56,49 @@ var resp = new Array();
     function plusRedScope() {
         redScope += 1;
 		updateHtml();
-    };
+    }
     function minusRedScope() {
         redScope -= 1;
 		updateHtml();
-    };
+    }
     function plusBlueScope() {
         blueScope += 1;
 		updateHtml();
-    };
+    }
     function minusBlueScope() {
         blueScope -= 1;
 		updateHtml();
-    };
+    }
 
     function plusBluePenalty() {
         bluePenalty += 1;
 		updateHtml();
-    };
+		updatePenalty();
+    }
     function minusBluePenalty() {
         bluePenalty -= 1;
 		updateHtml();
-
-    };
+		updatePenalty();
+    }
     function plusRedPenalty() {
         redPenalty += 1;
 		updateHtml();
-    };
+		updatePenalty();
+    }
     function minusRedPenalty() {
         redPenalty -= 1;
 		updateHtml();
-	};
+		updatePenalty();
+	}
     function redVideoReplay(){
 		redVideoReplays += 1;
 		updateHtml();
+		updateVideoReplay();
 	}
 	function blueVideoReplay(){
 		blueVideoReplays += 1;
 		updateHtml();
+		updateVideoReplay();
 	}
 	function accept(){
 		redRes += redScope;
@@ -100,31 +108,31 @@ var resp = new Array();
 		roundNumber += 1;
 		sendExchange();
 		updateHtml()
-	};
+	}
 	
 		
 	function selectFight(){
-		var xhr = new XMLHttpRequest();
+		let xhr = new XMLHttpRequest();
 		xhr.open('GET', 'http://localhost:8080/secretary/fights', false);
 		xhr.send();
 		if (xhr.status != 200) {
 		alert( xhr.status + ': ' + xhr.statusText );
 		} else {
 			resp = JSON.parse( xhr.responseText).res;
-			var fights = new Array();
-			for (i = 0; i < resp.length; i++){
+			let fights = [];
+			for (let i = 0; i < resp.length; i++){
 				fights.push("<option value =" + i +">" + resp[i].id_serial + " " + resp[i].red_name + " X " + resp[i].blue_name + "</option>");
 			}
-			var res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
-			for(i = 0; i < fights.length; i++){
+			let res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
+			for(let i = 0; i < fights.length; i++){
 				res += fights[i];
 			}
 			document.getElementById("selectFight").innerHTML = res;
 		}
 	}
 	function loadFight(){
-		var fightChange = selectForm.fightSelect;
-		var selectedOption = fightChange.options[fightChange.selectedIndex];
+		let fightChange = selectForm.fightSelect;
+		let selectedOption = fightChange.options[fightChange.selectedIndex];
 		redName = resp[selectedOption.value].red_name;
 		blueName = resp[selectedOption.value].blue_name;
 		redRes = Number(resp[selectedOption.value].red_scores);
@@ -149,8 +157,8 @@ var resp = new Array();
 		updateHtml()
 	}
 	function sendExchange(){
-		var xhr = new XMLHttpRequest();
-		var json = JSON.stringify({
+		let xhr = new XMLHttpRequest();
+		let json = JSON.stringify({
 			id : 0,
 			fight_id: fightId,
 			seconds_passed: time,
@@ -203,4 +211,33 @@ var resp = new Array();
 			document.getElementById("blueVideoReplays").className = "btn btn-white border rounded bg-white px-1 mr-2";
 		}
 	}
+	function updatePenalty(){
+		let xhr = new XMLHttpRequest();
+		let json = JSON.stringify({
+			red_penalty : redPenalty,
+			blue_penalty: bluePenalty
+		});
+		xhr.open("POST", '/penalty', true)
+		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+		xhr.send(json);
+	}
+	function updateVideoReplay(){
+		let xhr = new XMLHttpRequest();
+		let json = JSON.stringify({
+			red_video_replay : redVideoReplays,
+			blue_video_replay: blueVideoReplays
+		});
+		xhr.open("POST", '/videoReplay', true)
+		xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+		xhr.send(json);
+	}
+	function connect() {
+		let socket = new SockJS('/timer');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function(frame) {
+			stompClient.subscribe('/time', function (time){
+				console.log(JSON.parse(time.body));
+			})
+		});
+}
 

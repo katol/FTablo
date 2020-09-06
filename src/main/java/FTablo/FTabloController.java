@@ -1,6 +1,8 @@
 package FTablo;
 
 import org.json.JSONObject;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +52,28 @@ public class FTabloController {
     @RequestMapping(value = "/exchange", method = RequestMethod.POST)
     @ResponseBody
     public String takeExchange() {
-        System.out.println("yeeee!!");
+        System.out.println("exchange");
         return "result";
+    }
+    @RequestMapping(value = "/penalty", method = RequestMethod.POST)
+    @ResponseBody
+    public String takePenalty() {
+        System.out.println("penalty");
+        return "result";
+    }
+    @RequestMapping(value = "/videoReplay", method = RequestMethod.POST)
+    @ResponseBody
+    public String takeVideoReplay() {
+        System.out.println("videoReplay");
+        return "result";
+    }
+    @MessageMapping("/timer")
+    @SendTo("/time")
+    public JSONObject timerToJs() throws Exception {
+        Thread.sleep(1000);
+        JSONObject Json = new JSONObject();
+        Json.put("time", 122);
+        return Json;
     }
 
 }

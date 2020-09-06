@@ -1,9 +1,9 @@
-var redName = "красный";
-var blueName = "синий";
-var redScope = 0;
-var blueScope = 0;
-var redPenalty = 0;
-var bluePenalty = 0;
+let redName = "красный";
+let blueName = "синий";
+let redScope = 0;
+let blueScope = 0;
+let redPenalty = 0;
+let bluePenalty = 0;
 updateHtml();
 
 

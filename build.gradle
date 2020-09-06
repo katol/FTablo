@@ -28,6 +28,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 	compile group: 'org.json', name: 'json', version: '20200518'
+	compile("org.springframework.boot:spring-boot-starter-websocket")
+	compile("org.springframework:spring-messaging")
 }
 
 test {
