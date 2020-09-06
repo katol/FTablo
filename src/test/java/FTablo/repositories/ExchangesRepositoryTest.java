@@ -53,7 +53,7 @@ class ExchangesRepositoryTest {
 
         expectedExchange.setFight(fight);
         expectedExchange.setSecondsPassed(10);
-        expectedExchange.setSaveTs(Timestamp.from(Instant.now()));
+        expectedExchange.setSaveTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
         expectedExchange.setActionDescription("Some action description");
         expectedExchange.setScoresToRed(1);
         expectedExchange.setScoresToBlue(2);
