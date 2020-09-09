@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "exchanges")
+@Table(name = "penalties")
 @Data
-public class Exchange {
+public class Penalty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,14 +21,11 @@ public class Exchange {
     private Integer secondsPassed;
 
     @Column
-    private Timestamp saveTs;
+    private Timestamp ts;
 
     @Column
-    private String actionDescription;
+    private String foulDescription;
 
     @Column
-    private Integer scoresToRed;
-
-    @Column
-    private Integer scoresToBlue;
+    private Color ruleBreakerColor;
 }

@@ -50,11 +50,23 @@ public class Fight {
     private Integer blueVideoReplays;
 
     public void addExchange(Exchange exchange) {
-        this.secondsPassed = exchange.getSecondsPassed();
-        this.lastExchangeNumber++;
-        this.lastTs = exchange.getSaveTs();
-        this.lastDescription = exchange.getActionDescription();
-        this.redScores += exchange.getScoresToRed();
-        this.blueScores += exchange.getScoresToBlue();
+        secondsPassed = exchange.getSecondsPassed();
+        lastExchangeNumber++;
+        lastTs = exchange.getSaveTs();
+        lastDescription = exchange.getActionDescription();
+        redScores += exchange.getScoresToRed();
+        blueScores += exchange.getScoresToBlue();
+    }
+
+    public void addPenalty(Penalty penalty) {
+        secondsPassed = penalty.getSecondsPassed();
+        lastTs = penalty.getTs();
+        lastDescription = penalty.getFoulDescription();
+
+        if (penalty.getRuleBreakerColor().equals(Color.RED)) {
+            redPenalties++;
+        } else if (penalty.getRuleBreakerColor().equals(Color.BLUE)) {
+            bluePenalties++;
+        }
     }
 }
