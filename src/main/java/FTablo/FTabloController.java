@@ -49,6 +49,14 @@ public class FTabloController {
         resFight.put("res", list);
         return resFight.toString();
     }
+    @RequestMapping(value ="/secretary/newFight", method = RequestMethod.GET)
+    @ResponseBody
+    public String getNewFight() {
+        JSONObject firstFight = new JSONObject();
+        firstFight.put("fight_id", 122);
+        return firstFight.toString();
+    }
+
     @RequestMapping(value = "/exchange", method = RequestMethod.POST)
     @ResponseBody
     public String takeExchange() {

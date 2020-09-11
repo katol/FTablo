@@ -154,6 +154,16 @@ function timer() {
 		roundNumber = 1;
 		blueVideoReplays = 0;
 		redVideoReplays = 0;
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', 'http://localhost:8080/secretary/newFight', false);
+		xhr.send();
+		if (xhr.status != 200) {
+			alert( xhr.status + ': ' + xhr.statusText );
+		} else {
+			resp = JSON.parse( xhr.responseText).fight_id;
+			fightId = resp;
+		}
+		alert(fightId);
 		updateHtml()
 	}
 	function sendExchange(){
