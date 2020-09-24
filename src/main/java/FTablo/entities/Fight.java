@@ -1,6 +1,9 @@
 package FTablo.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -8,6 +11,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "fights")
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class Fight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +31,7 @@ public class Fight {
     private String lastDescription;
 
     @Column
+    @NonNull
     private String redName;
 
     @Column
@@ -38,6 +44,7 @@ public class Fight {
     private Integer redVideoReplays;
 
     @Column
+    @NonNull
     private String blueName;
 
     @Column

@@ -48,4 +48,14 @@ class FightsRepositoryTest {
         Fight actualFight = fightsRepository.findAll().stream().findFirst().orElse(null);
         assertEquals(expectedFight, actualFight);
     }
+
+    @Test
+    void savesFightsWithNamesOnly() {
+        Fight expectedFight = new Fight("Sveta", "Tolian");
+
+        fightsRepository.save(expectedFight);
+
+        Fight actualFight = fightsRepository.findAll().stream().findFirst().orElse(null);
+        assertEquals(expectedFight, actualFight);
+    }
 }
