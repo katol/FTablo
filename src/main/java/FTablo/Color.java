@@ -1,4 +1,4 @@
-package FTablo.entities;
+package FTablo;
 
 public enum Color {
     RED,

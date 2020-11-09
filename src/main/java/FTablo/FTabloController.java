@@ -4,6 +4,8 @@ import FTablo.entities.Exchange;
 import FTablo.entities.Fight;
 import FTablo.repositories.FightsRepository;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.Map;
 
 @Controller
 public class FTabloController {
+    private final Logger logger = LoggerFactory.getLogger(FTabloController.class);
     private final FightsRepository fightsRepository;
 
     public FTabloController(FightsRepository fightsRepository) {
@@ -42,6 +45,7 @@ public class FTabloController {
     @RequestMapping(value ="/fights", method = RequestMethod.GET)
     @ResponseBody
     public String getFights() {
+        logger.info("Get fights");
         return new Gson().toJson(fightsRepository.findAll());
     }
 

@@ -1,6 +1,6 @@
 package FTablo.repositories;
 
-import FTablo.entities.Color;
+import FTablo.Color;
 import FTablo.entities.Fight;
 import FTablo.entities.Penalty;
 import org.flywaydb.core.Flyway;

@@ -1,5 +1,6 @@
 package FTablo.entities;
 
+import FTablo.Color;
 import lombok.Data;
 
 import javax.persistence.*;
