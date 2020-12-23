@@ -48,7 +48,6 @@ public class FTabloController {
     @RequestMapping(value ="/fights", method = RequestMethod.GET)
     @ResponseBody
     public String getFights() {
-        logger.info("Get fights");
         return new Gson().toJson(fightsRepository.findAll());
     }
 
