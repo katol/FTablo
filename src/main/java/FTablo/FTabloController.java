@@ -6,6 +6,7 @@ import FTablo.repositories.FightsRepository;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +17,11 @@ import java.util.Map;
 public class FTabloController {
     private final Logger logger = LoggerFactory.getLogger(FTabloController.class);
     private final FightsRepository fightsRepository;
+    private final TimerService timerService;
 
-    public FTabloController(FightsRepository fightsRepository) {
+    public FTabloController(FightsRepository fightsRepository, TimerService timerService) {
         this.fightsRepository = fightsRepository;
+        this.timerService = timerService;
     }
 
     @GetMapping("/secretary")
@@ -83,5 +86,26 @@ public class FTabloController {
     public String takeVideoReplay() {
         System.out.println("videoReplay");
         return "result";
+    }
+
+    @MessageMapping("/timer")
+    public void timer(String message) {
+        switch (message) {
+            case "start":
+                timerService.start();
+                break;
+            case "stop":
+                timerService.stop();
+                break;
+            case "increase":
+                timerService.increase();
+                break;
+            case "decrease":
+                timerService.decrease();
+                break;
+            default:
+                logger.warn("Unknown timer command " + message);
+                break;
+        }
     }
 }

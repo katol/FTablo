@@ -1,6 +1,5 @@
 let time = 0;
-let timerId = 0;
-let activate = 0;
+let isTimerActivated = false;
 let redScope = 0;
 let blueScope = 0;
 let redPenalty = 0;
@@ -16,29 +15,7 @@ let fightId = 0;
 let stompClient = null;
 document.getElementById("roundNumber").innerHTML = "Текущий сход №" + roundNumber;
 let resp = [];
-
-function timer() {
-	if (activate === 0) {
-		document.getElementById("startStop").innerHTML = "СТОП";
-		activate = 1;
-		timerId = setInterval(function () {
-			connect();
-			time += 1;
-			if(time < 0) {
-				time = 0;
-			}
-			updateHtml();
-		}, 1000);
-	} else {
-		document.getElementById("startStop").innerHTML = "СТАРТ";
-		activate = 0;
-		stopTimer();
-	}
-}
-
-function stopTimer() {
-	clearInterval(timerId);
-}
+connectToTimer();
 
 function plusTenSec() {
 	time += 10;
@@ -276,13 +253,25 @@ function updateVideoReplay() {
 	xhr.send(json);
 }
 
-function connect() {
+function connectToTimer() {
 	let socket = new SockJS('/timer');
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function() {
-		stompClient.subscribe('/time', function (time) {
-			console.log(JSON.parse(time.body));
+		stompClient.subscribe('/topic/time', function (seconds) {
+			//TODO Do time display here instead of logging
+			console.log("Received time in seconds from server = " + seconds.body);
 		})
 	});
 }
 
+function onTimerClick() {
+	if (!isTimerActivated) {
+		document.getElementById("startStop").innerHTML = "СТОП";
+		isTimerActivated = true;
+		stompClient.send("/app/timer", {}, "start");
+	} else {
+		document.getElementById("startStop").innerHTML = "СТАРТ";
+		isTimerActivated = false;
+		stompClient.send("/app/timer", {}, "stop");
+	}
+}
