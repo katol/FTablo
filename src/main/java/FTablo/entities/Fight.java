@@ -20,7 +20,7 @@ public class Fight {
     private Integer id;
 
     @Column
-    private Integer secondsPassed;
+    private Integer secondsPassed = 0;
 
     @Column
     private Integer lastExchangeNumber;
@@ -36,7 +36,7 @@ public class Fight {
     private String redName;
 
     @Column
-    private Integer redScores;
+    private Integer redScores = 0;
 
     @Column
     private Integer redPenalties;
@@ -49,7 +49,7 @@ public class Fight {
     private String blueName;
 
     @Column
-    private Integer blueScores;
+    private Integer blueScores = 0;
 
     @Column
     private Integer bluePenalties;
@@ -59,11 +59,20 @@ public class Fight {
 
     public void addExchange(Exchange exchange) {
         secondsPassed = exchange.getSecondsPassed();
-        lastExchangeNumber++;
+        lastExchangeNumber = 1;
         lastTs = exchange.getSaveTs();
         lastDescription = exchange.getActionDescription();
-        redScores += exchange.getScoresToRed();
-        blueScores += exchange.getScoresToBlue();
+        if (exchange.getScoresToRed() != null) {
+            System.out.println(exchange.getScoresToRed());
+            redScores = exchange.getScoresToRed();
+        }else {
+            redScores = 0;
+        }
+        if (exchange.getScoresToBlue() != null) {
+            blueScores = exchange.getScoresToBlue();
+        } else {
+            blueScores = 0;
+        }
     }
 
     public void addPenalty(Penalty penalty) {

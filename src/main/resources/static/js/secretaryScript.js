@@ -1,4 +1,5 @@
 let time = 0;
+let id = 1;
 let isTimerActivated = false;
 let redScope = 0;
 let blueScope = 0;
@@ -15,6 +16,7 @@ let fightId = 0;
 let stompClient = null;
 document.getElementById("roundNumber").innerHTML = "Текущий сход №" + roundNumber;
 let resp = [];
+let data;
 connectToTimer();
 
 function plusTenSec() {
@@ -92,10 +94,10 @@ function blueVideoReplay() {
 function accept() {
 	redRes += redScope;
 	blueRes += blueScope;
+	sendExchange();
 	redScope = 0;
 	blueScope = 0;
 	roundNumber += 1;
-	sendExchange();
 	updateHtml()
 }
 
@@ -104,43 +106,46 @@ function selectFight() {
 	xhr.open('GET', 'http://localhost:8080/fights', false);
 	xhr.send();
 	if (xhr.status !== 200) {
-	alert(xhr.status + ': ' + xhr.statusText);
+		alert(xhr.status + ': ' + xhr.statusText);
 	} else {
-		resp = JSON.parse( xhr.responseText).res;
+		resp = JSON.parse(xhr.responseText);
+		accept(resp);
+		data = resp;
 		let fights = [];
-		for (let i = 0; i < resp.length; i++) {
+		for (let i = 0; i < data.length; i++) {
 			fights.push(
-				"<option value =" + i +">"
-					+ resp[i].id_serial + " " + resp[i].red_name + " X " + resp[i].blue_name +
+				"<option value =" + i + ">" + data[i].id
+				+ data[i].redName + " X " + data[i].blueName +
 				"</option>"
 			);
 		}
 		let res = "<option selected>ВЫБЕРИТЕ БОЙ</option>";
-		for(let i = 0; i < fights.length; i++) {
+		for (let i = 0; i < fights.length; i++) {
 			res += fights[i];
 		}
 		document.getElementById("selectFight").innerHTML = res;
 	}
 }
+	function nextStep() {
+		let fightChange = selectForm.fightSelect;
+		redName = data[fightChange.selectedIndex].redName;
+		blueName = data[fightChange.selectedIndex].blueName;
+		redRes = Number(resp[fightChange.selectedIndex].redScores);
+		blueRes = Number(resp[fightChange.selectedIndex].blueScores);
+		time = Number(resp[fightChange.selectedIndex].lastTs);
+		fightId = resp[fightChange.selectedIndex].id;
+		alert(fightId + " " + time);
+		updateHtml();
+	}
 
 function loadFight() {
-	let fightChange = selectForm.fightSelect;
-	let selectedOption = fightChange.options[fightChange.selectedIndex];
-	redName = resp[selectedOption.value].red_name;
-	blueName = resp[selectedOption.value].blue_name;
-	redRes = Number(resp[selectedOption.value].red_scores);
-	blueRes = Number(resp[selectedOption.value].blue_scores);
-	redScope = 0;
-	blueScope = 0;
-	time = Number(resp[selectedOption.value].seconds_passed);
-	updateHtml()
-	fightId = resp[selectedOption.value].fight_id;
+	updateHtml();
 }
 
 function newFight() {
 	redName = document.getElementById("nameRed").value;
 	blueName = document.getElementById("nameBlue").value;
-	redRes = 0;
+	redRes = 0
 	blueRes = 0;
 	redScope = 0;
 	blueScope = 0;
@@ -165,24 +170,24 @@ function newFight() {
 function sendExchange() {
 	let xhr = new XMLHttpRequest();
 	let json = JSON.stringify({
-		id : 0,
-		fight_id: fightId,
-		seconds_passed: time,
-		save_ts : new Date(),
-		action_description : "",
-		scores_to_red : redScope,
-		scores_to_blue : blueScope
+		fightId : id,
+		secondsPassed: time,
+		saveTs :"2020-09-23 08:12:56.7747",
+		actionDescription : "",
+		scoresToRed : redScope,
+		scoresToBlue : blueScope
 	});
+	id += 1;
 	xhr.open("POST", '/exchanges', true)
 	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+	alert(json);
 	xhr.send(json);
 }
 
 function updateHtml() {
 	document.getElementById("redName").innerHTML = redName;
 	document.getElementById("blueName").innerHTML = blueName;
-	document.getElementById("timer").innerHTML
-		= Math.floor(time/600) + "" + Math.floor((time%600)/60) + ":" + Math.floor((time%60)/10) + time%10;
+	updateTimer();
 	document.getElementById("redScope").innerHTML = redScope;
 	document.getElementById("blueScope").innerHTML = blueScope;
 	document.getElementById("redRes").innerHTML = redRes;
@@ -230,6 +235,10 @@ function updateHtml() {
 			= "btn btn-white border rounded bg-white px-1 mr-2";
 	}
 }
+function updateTimer(){
+	document.getElementById("timer").innerHTML
+		= Math.floor(time/600) + "" + Math.floor((time%600)/60) + ":" + Math.floor((time%60)/10) + time%10;
+}
 
 function updatePenalty() {
 	let xhr = new XMLHttpRequest();
@@ -259,6 +268,8 @@ function connectToTimer() {
 	stompClient.connect({}, function() {
 		stompClient.subscribe('/topic/time', function (seconds) {
 			//TODO Do time display here instead of logging
+			time = seconds.body;
+			updateTimer();
 			console.log("Received time in seconds from server = " + seconds.body);
 		})
 	});
