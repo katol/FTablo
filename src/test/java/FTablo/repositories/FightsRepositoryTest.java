@@ -51,11 +51,23 @@ class FightsRepositoryTest {
 
     @Test
     void savesFightsWithNamesOnly() {
-        Fight expectedFight = new Fight("Sveta", "Tolian");
-
-        fightsRepository.save(expectedFight);
+        fightsRepository.save(new Fight("Sveta", "Tolian"));
 
         Fight actualFight = fightsRepository.findAll().stream().findFirst().orElse(null);
-        assertEquals(expectedFight, actualFight);
+
+        if (actualFight == null) {
+            fail();
+        }
+
+        assertEquals(0, actualFight.getSecondsPassed());
+        assertEquals(0, actualFight.getLastExchangeNumber());
+        assertEquals("Sveta", actualFight.getRedName());
+        assertEquals(0, actualFight.getRedScores());
+        assertEquals(0, actualFight.getRedPenalties());
+        assertEquals(0, actualFight.getRedVideoReplays());
+        assertEquals("Tolian", actualFight.getBlueName());
+        assertEquals(0, actualFight.getBlueScores());
+        assertEquals(0, actualFight.getBluePenalties());
+        assertEquals(0, actualFight.getBlueVideoReplays());
     }
 }
