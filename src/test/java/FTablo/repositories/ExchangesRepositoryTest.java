@@ -7,12 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ExchangesRepositoryTest {
@@ -25,42 +27,43 @@ class ExchangesRepositoryTest {
     @Autowired
     private ExchangesRepository exchangesRepository;
 
+    private Fight fight;
+    private Exchange exchange;
+
     @BeforeEach
     void setUp() {
         flyway.clean();
         flyway.migrate();
-    }
 
-    @Test
-    void savesExchange() {
-        Exchange expectedExchange = new Exchange();
-
-        Fight fight = new Fight();
+        fight = new Fight("Sveta", "Tolian");
         fight.setSecondsPassed(10);
         fight.setLastExchangeNumber(1);
         fight.setLastTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
         fight.setLastDescription("Some description");
-        fight.setRedName("Sveta");
         fight.setRedScores(1);
         fight.setRedPenalties(0);
         fight.setRedVideoReplays(1);
-        fight.setBlueName("Tolian");
         fight.setBlueScores(2);
         fight.setBluePenalties(1);
         fight.setBlueVideoReplays(0);
 
+        exchange = new Exchange();
+        exchange.setSecondsPassed(10);
+        exchange.setSaveTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
+        exchange.setActionDescription("Some action description");
+        exchange.setScoresToRed(1);
+        exchange.setScoresToBlue(2);
+    }
+
+    @Test
+    void storesExchangeWithFight() {
+        fight.addExchange(exchange);
         fightsRepository.save(fight);
+        assertEquals(1, exchangesRepository.count());
+    }
 
-        expectedExchange.setFight(fight);
-        expectedExchange.setSecondsPassed(10);
-        expectedExchange.setSaveTs(Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS)));
-        expectedExchange.setActionDescription("Some action description");
-        expectedExchange.setScoresToRed(1);
-        expectedExchange.setScoresToBlue(2);
-
-        exchangesRepository.save(expectedExchange);
-
-        Exchange actualExchange = exchangesRepository.findAll().stream().findFirst().orElse(null);
-        assertEquals(expectedExchange, actualExchange);
+    @Test
+    void doesNotStoreExchangeWithoutFight() {
+        assertThrows(DataIntegrityViolationException.class, () -> exchangesRepository.save(exchange));
     }
 }

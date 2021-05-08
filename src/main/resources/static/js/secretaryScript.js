@@ -267,10 +267,8 @@ function connectToTimer() {
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function() {
 		stompClient.subscribe('/topic/time', function (seconds) {
-			//TODO Do time display here instead of logging
 			time = seconds.body;
 			updateTimer();
-			console.log("Received time in seconds from server = " + seconds.body);
 		})
 	});
 }

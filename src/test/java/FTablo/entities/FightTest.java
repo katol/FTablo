@@ -1,38 +1,29 @@
 package FTablo.entities;
 
-import FTablo.Color;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FightTest {
 
-    Fight actual;
-
-    @BeforeEach
-    void setUp() {
-        actual = new Fight();
-        actual.setSecondsPassed(10);
-        actual.setLastExchangeNumber(1);
-        Timestamp oldTs = Timestamp.from(Instant.now());
-        actual.setLastTs(oldTs);
-        actual.setLastDescription("Some old description");
-        actual.setRedName("Sveta");
-        actual.setRedScores(1);
-        actual.setRedPenalties(0);
-        actual.setRedVideoReplays(1);
-        actual.setBlueName("Tolian");
-        actual.setBlueScores(2);
-        actual.setBluePenalties(1);
-        actual.setBlueVideoReplays(0);
-    }
-
     @Test
     void addExchange() {
+        Fight fight = new Fight("Sveta", "Tolian");
+        fight.setSecondsPassed(10);
+        fight.setLastExchangeNumber(1);
+        Timestamp oldTs = Timestamp.from(Instant.now());
+        fight.setLastTs(oldTs);
+        fight.setLastDescription("Some old description");
+        fight.setRedScores(1);
+        fight.setRedPenalties(0);
+        fight.setRedVideoReplays(1);
+        fight.setBlueScores(2);
+        fight.setBluePenalties(1);
+        fight.setBlueVideoReplays(0);
+
         Exchange exchange = new Exchange();
         exchange.setSecondsPassed(30);
         Timestamp newTs = Timestamp.from(Instant.now());
@@ -41,50 +32,19 @@ class FightTest {
         exchange.setScoresToRed(2);
         exchange.setScoresToBlue(1);
 
-        actual.addExchange(exchange);
+        fight.addExchange(exchange);
 
-        Fight expected = new Fight();
-        expected.setSecondsPassed(30);
-        expected.setLastExchangeNumber(2);
-        expected.setLastTs(newTs);
-        expected.setLastDescription("Some exchange description");
-        expected.setRedName("Sveta");
-        expected.setRedScores(3);
-        expected.setRedPenalties(0);
-        expected.setRedVideoReplays(1);
-        expected.setBlueName("Tolian");
-        expected.setBlueScores(3);
-        expected.setBluePenalties(1);
-        expected.setBlueVideoReplays(0);
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void addPenalty() {
-        Penalty penalty = new Penalty();
-        penalty.setSecondsPassed(25);
-        Timestamp newTs = Timestamp.from(Instant.now());
-        penalty.setTs(newTs);
-        penalty.setFoulDescription("Some foul description");
-        penalty.setRuleBreakerColor(Color.BLUE);
-
-        actual.addPenalty(penalty);
-
-        Fight expected = new Fight();
-        expected.setSecondsPassed(25);
-        expected.setLastExchangeNumber(1);
-        expected.setLastTs(newTs);
-        expected.setLastDescription("Some foul description");
-        expected.setRedName("Sveta");
-        expected.setRedScores(1);
-        expected.setRedPenalties(0);
-        expected.setRedVideoReplays(1);
-        expected.setBlueName("Tolian");
-        expected.setBlueScores(2);
-        expected.setBluePenalties(2);
-        expected.setBlueVideoReplays(0);
-
-        assertEquals(expected, actual);
+        assertEquals(30, fight.getSecondsPassed());
+        assertEquals(2, fight.getLastExchangeNumber());
+        assertEquals(newTs, fight.getLastTs());
+        assertEquals("Some exchange description", fight.getLastDescription());
+        assertEquals("Sveta", fight.getRedName());
+        assertEquals(3, fight.getRedScores());
+        assertEquals(0, fight.getRedPenalties());
+        assertEquals(1, fight.getRedVideoReplays());
+        assertEquals("Tolian", fight.getBlueName());
+        assertEquals(3, fight.getBlueScores());
+        assertEquals(1, fight.getBluePenalties());
+        assertEquals(0, fight.getBlueVideoReplays());
     }
 }
