@@ -1,0 +1,61 @@
+= FTablo API Documentation
+
+== Introduction
+This is the FTablo Spring REST Docs generated documentation
+
+== Fights API
+Collection of CRUD API endpoints used to manipulate fights
+
+=== Create fight
+Create new fight with names of fencers
+
+==== Sample Request
+include::{snippets}/fights/create/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/create/http-response.adoc[]
+
+=== Create fight with invalid parameters
+Create new fight, when some parameters fail validation
+
+==== Sample Request
+include::{snippets}/fights/create-with-invalid-parameters/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/create-with-invalid-parameters/http-response.adoc[]
+
+=== Get fights
+Get all fights
+
+==== Sample Request
+include::{snippets}/fights/get-all/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/get-all/http-response.adoc[]
+
+=== Get fight
+Get fight by id
+
+==== Sample Request
+include::{snippets}/fights/get-by-id/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/get-by-id/http-response.adoc[]
+
+=== Add exchange
+Add new exchange to fight
+
+==== Sample Request
+include::{snippets}/fights/add-exchange/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/add-exchange/http-response.adoc[]
+
+=== Add exchange with invalid parameters
+Add new exchange to fight, when some parameters fail validation
+
+==== Sample Request
+include::{snippets}/fights/add-exchange-with-invalid-parameters/http-request.adoc[]
+
+==== Sample Response
+include::{snippets}/fights/add-exchange-with-invalid-parameters/http-response.adoc[]
